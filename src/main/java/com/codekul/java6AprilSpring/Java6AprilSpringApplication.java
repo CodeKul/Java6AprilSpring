@@ -1,5 +1,6 @@
 package com.codekul.java6AprilSpring;
 
+import com.codekul.java6AprilSpring.di.Student;
 import com.codekul.java6AprilSpring.ioc.SimConfig;
 import com.codekul.java6AprilSpring.ioc.Vodafone;
 import org.springframework.boot.SpringApplication;
@@ -21,6 +22,8 @@ public class Java6AprilSpringApplication {
 		vodafone.calling();
 
 
+		Student student = context.getBean(Student.class);
+		student.callSubject();
 	}
 
 	@GetMapping("hii")
