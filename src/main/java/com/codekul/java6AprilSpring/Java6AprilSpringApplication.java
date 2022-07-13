@@ -22,8 +22,11 @@ public class Java6AprilSpringApplication {
 		vodafone.calling();
 
 
-		Student student = context.getBean(Student.class);
-		student.callSubject();
+//		Student student = context.getBean(Student.class);
+//		student.callSubject();
+//
+//		Student student1 = context.getBean(Student.class);
+//		student1.callSubject();;
 	}
 
 	@GetMapping("hii")
