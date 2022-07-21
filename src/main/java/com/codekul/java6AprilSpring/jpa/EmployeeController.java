@@ -43,14 +43,30 @@ public class EmployeeController {
     }
 
     @DeleteMapping("deleteEmployee")
-    public String deleteEmployee(@RequestBody Employee employee){
+    public String deleteEmployee(@RequestBody Employee employee) {
         employeeRepo.delete(employee);
         return "employee deleted ..";
     }
+
     @DeleteMapping("deleteEmployee1/{id}")
-    public String deleteEmployee(@PathVariable("id") Integer id){
+    public String deleteEmployee(@PathVariable("id") Integer id) {
         employeeRepo.deleteById(id);
         return "employee deleted ..";
+    }
+
+    @GetMapping("getById/{id}")
+    public Employee getEmployeeById(@PathVariable("id") Integer id) {
+        return employeeRepo.getReferenceById(id);
+    }
+
+    @GetMapping("getByIdOptional/{id}")
+    public Optional<Employee> getEmployeeByIdOptional(@PathVariable("id") Integer id) {
+        return employeeRepo.findById(id);
+    }
+
+    @GetMapping("getByName/{name}")
+    public Employee getEmpByName(@PathVariable("name") String name) {
+        return employeeRepo.findByName(name);
     }
 
 
