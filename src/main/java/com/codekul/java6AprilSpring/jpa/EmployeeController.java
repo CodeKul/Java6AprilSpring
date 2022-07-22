@@ -3,6 +3,7 @@ package com.codekul.java6AprilSpring.jpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +36,7 @@ public class EmployeeController {
         if (employee1.isPresent()) {
             employee1.get().setAddress(employee.getAddress());
             employee1.get().setName(employee.getName());
+            employee1.get().setDob(employee.getDob());
             employeeRepo.save(employee1.get());
             return "record updated ..";
         } else {
@@ -67,6 +69,17 @@ public class EmployeeController {
     @GetMapping("getByName/{name}")
     public Employee getEmpByName(@PathVariable("name") String name) {
         return employeeRepo.findByName(name);
+    }
+
+    @GetMapping("getByName/{name}/{address}")
+    public Employee getEmpByNameAndAddress(@PathVariable("name") String name, @PathVariable("address") String address) {
+        return employeeRepo.findByNameAndAddress(name, address);
+    }
+
+    @GetMapping("getEmployeeByDate/{firstDate}/{secondDate}")
+    public Employee getEmployeeByDate(@PathVariable("firstDate") String firstDate,
+                                      @PathVariable("secondDate") String secondDate) {
+        return employeeRepo.findByDobBetween(LocalDate.parse(firstDate),LocalDate.parse(secondDate));
     }
 
 

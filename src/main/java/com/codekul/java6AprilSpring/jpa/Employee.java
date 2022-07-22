@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Entity
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -18,6 +19,16 @@ public class Employee {
     private String name;
 
     private String address;
+
+    private LocalDate dob;
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
 
     public Integer getId() {
         return id;
