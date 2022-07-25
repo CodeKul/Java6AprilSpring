@@ -22,6 +22,16 @@ public class Employee {
 
     private LocalDate dob;
 
+    private Integer age;
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
     public LocalDate getDob() {
         return dob;
     }

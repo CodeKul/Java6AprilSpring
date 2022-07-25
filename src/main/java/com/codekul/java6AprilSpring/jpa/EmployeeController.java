@@ -77,9 +77,23 @@ public class EmployeeController {
     }
 
     @GetMapping("getEmployeeByDate/{firstDate}/{secondDate}")
-    public Employee getEmployeeByDate(@PathVariable("firstDate") String firstDate,
-                                      @PathVariable("secondDate") String secondDate) {
-        return employeeRepo.findByDobBetween(LocalDate.parse(firstDate),LocalDate.parse(secondDate));
+    public List<Employee> getEmployeeByDate(@PathVariable("firstDate") String firstDate, @PathVariable("secondDate") String secondDate) {
+        return employeeRepo.findByDobBetween(LocalDate.parse(firstDate), LocalDate.parse(secondDate));
+    }
+
+    @GetMapping("getEmployeeByAge/{age}")
+    public List<Employee> getLessThanAge(@PathVariable("age") Integer age) {
+        return employeeRepo.findByAgeLessThan(age);
+    }
+
+    @GetMapping("getEmployeeByAgeGreater/{age}")
+    public List<Employee> getGreaterThanAge(@PathVariable("age") Integer age) {
+        return employeeRepo.findByAgeGreaterThanEqual(age);
+    }
+
+    @GetMapping("getEmployeeDobAfter/{dob}")
+    public List<Employee> getEmployeeDobAfter(@PathVariable("dob") String dob) {
+        return employeeRepo.findByDobAfter(LocalDate.parse(dob));
     }
 
 
