@@ -7,8 +7,20 @@ plugins {
 group = 'com.codekul'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
 
 repositories {
+	maven {
+		url "https://repo.cuba-platform.com/content/groups/work"
+	}
 	mavenCentral()
 }
 
@@ -16,6 +28,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'mysql:mysql-connector-java'
+	implementation 'com.haulmont.yarg:yarg:2.0.12'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
