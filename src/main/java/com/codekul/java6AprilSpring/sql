@@ -306,5 +306,452 @@ mysql> select * from student limit 10;
 +----+-------+------+------------+
 3 rows in set (0.00 sec)
 
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| java6aprilmysql    |
++--------------------+
+2 rows in set (0.02 sec)
+
+mysql> use java6aprilmysql;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tablesl
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tablesl' at line 1
+mysql> show tables;
++---------------------------+
+| Tables_in_java6aprilmysql |
++---------------------------+
+| address                   |
+| student                   |
++---------------------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from address;
++----+------+----------+--------+------------+
+| id | hmno | street   | city   | student_id |
++----+------+----------+--------+------------+
+|  1 |  233 | kothrud  | pune   |          1 |
+|  2 |  676 | swargate | pune   |       NULL |
+|  3 |  234 | ABS      | Nashik |          3 |
++----+------+----------+--------+------------+
+3 rows in set (0.01 sec)
+
+mysql> create table product(id int primary key, name varchar(20),price int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table customer (id int primary key, name varchar(20), email varchar(20));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table orders(id int primary key, qauntity int, rate int ,total int ,p_id int, cust_id int,foreign key(p_id) references product(id),foreign key (cust_id) references customer(id));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into product(id,name,price) values(1,'mouse',200);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into product(id,name,price) values(1,'adapter',400);
+ERROR 1062 (23000): Duplicate entry '1' for key 'product.PRIMARY'
+mysql> insert into product(id,name,price) values(2,'adapter',400);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into product(id,name,price) values(3,'laptop',4000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into customer (id,name,email) values(1,'ram','ram@gmail.com');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into customer (id,name,email) values(2,'sham','sham@gmail.com');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into customer (id,name,email) values(3,'manoj','manoj@gmail.com');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into orders (id,quantity,rate,total,p_id,cust_id) values(1,1,200,200,1,1);
+ERROR 1054 (42S22): Unknown column 'quantity' in 'field list'
+mysql> insert into orders (id,qauntity,rate,total,p_id,cust_id) values(1,1,200,200,1,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into orders (id,qauntity,rate,total,p_id,cust_id) values(2,2,400,800,2,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into orders (id,qauntity,rate,total,p_id,cust_id) values(3,2,400,800,2,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into orders (id,qauntity,rate,total,p_id,cust_id) values(4,1,4000,4000,3,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from product;
++----+---------+-------+
+| id | name    | price |
++----+---------+-------+
+|  1 | mouse   |   200 |
+|  2 | adapter |   400 |
+|  3 | laptop  |  4000 |
++----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from customer;
++----+-------+-----------------+
+| id | name  | email           |
++----+-------+-----------------+
+|  1 | ram   | ram@gmail.com   |
+|  2 | sham  | sham@gmail.com  |
+|  3 | manoj | manoj@gmail.com |
++----+-------+-----------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from orders;
++----+----------+------+-------+------+---------+
+| id | qauntity | rate | total | p_id | cust_id |
++----+----------+------+-------+------+---------+
+|  1 |        1 |  200 |   200 |    1 |       1 |
+|  2 |        2 |  400 |   800 |    2 |       1 |
+|  3 |        2 |  400 |   800 |    2 |       2 |
+|  4 |        1 | 4000 |  4000 |    3 |       3 |
++----+----------+------+-------+------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from customer c inner join orders o on o.cust_id=c.id;
++----+-------+-----------------+----+----------+------+-------+------+---------+
+| id | name  | email           | id | qauntity | rate | total | p_id | cust_id |
++----+-------+-----------------+----+----------+------+-------+------+---------+
+|  1 | ram   | ram@gmail.com   |  1 |        1 |  200 |   200 |    1 |       1 |
+|  1 | ram   | ram@gmail.com   |  2 |        2 |  400 |   800 |    2 |       1 |
+|  2 | sham  | sham@gmail.com  |  3 |        2 |  400 |   800 |    2 |       2 |
+|  3 | manoj | manoj@gmail.com |  4 |        1 | 4000 |  4000 |    3 |       3 |
++----+-------+-----------------+----+----------+------+-------+------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select max(p_id) from customer c inner join orders o on o.cust_id=c.id;
++-----------+
+| max(p_id) |
++-----------+
+|         3 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select count(p_id) from customer c inner join orders o on o.cust_id=c.id group by c.name;
++-------------+
+| count(p_id) |
++-------------+
+|           2 |
+|           1 |
+|           1 |
++-------------+
+3 rows in set (0.00 sec)
+
+mysql> select count(p_id),name from customer c inner join orders o on o.cust_id=c.id group by c.name;
++-------------+-------+
+| count(p_id) | name  |
++-------------+-------+
+|           2 | ram   |
+|           1 | sham  |
+|           1 | manoj |
++-------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select count(p_id),name from customer c inner join orders o on o.cust_id=c.id group by c.name limit 1;
++-------------+------+
+| count(p_id) | name |
++-------------+------+
+|           2 | ram  |
++-------------+------+
+1 row in set (0.00 sec)
+
+mysql> select count(p_id) from customer c inner join orders o on o.cust_id=c.id group by c.name;
++-------------+
+| count(p_id) |
++-------------+
+|           2 |
+|           1 |
+|           1 |
++-------------+
+3 rows in set (0.00 sec)
+
+mysql> select count(p_id) from customer c inner join orders o on o.cust_id=c.id;
++-------------+
+| count(p_id) |
++-------------+
+|           4 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> select count(p_id),name from customer c inner join orders o on o.cust_id=c.id group by c.name limit 1;
++-------------+------+
+| count(p_id) | name |
++-------------+------+
+|           2 | ram  |
++-------------+------+
+1 row in set (0.00 sec)
+
+mysql> select max(total) from customer c inner join orders o o.cust_id = c.id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'o.cust_id = c.id' at line 1
+mysql> select max(total) from customer c inner join orders on o.cust_id = c.id;
+ERROR 1054 (42S22): Unknown column 'o.cust_id' in 'on clause'
+mysql> select max(total) from customer c inner join orders o on o.cust_id = c.id;
++------------+
+| max(total) |
++------------+
+|       4000 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select max(total),name from customer c inner join orders o on o.cust_id = c.id;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #2 of SELECT list contains nonaggregated column 'java6aprilmysql.c.name'; this is incompatible with sql_mode=only_full_group_by
+mysql> select max(total),name from customer c inner join orders o on o.cust_id = c.id group by name;
++------------+-------+
+| max(total) | name  |
++------------+-------+
+|        800 | ram   |
+|        800 | sham  |
+|       4000 | manoj |
++------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select max(total),name from customer c inner join orders o on o.cust_id = c.id group by name limit 1 desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc' at line 1
+mysql> select max(total),name from customer c inner join orders o on o.cust_id = c.id group by name  limit 1;
++------------+------+
+| max(total) | name |
++------------+------+
+|        800 | ram  |
++------------+------+
+1 row in set (0.00 sec)
+
+mysql> select max(total),name from customer c inner join orders o on o.cust_id = c.id group by name order by total;
+ERROR 1055 (42000): Expression #1 of ORDER BY clause is not in GROUP BY clause and contains nonaggregated column 'java6aprilmysql.o.total' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select max(total),name from customer c inner join orders o on o.cust_id = c.id group by name;
++------------+-------+
+| max(total) | name  |
++------------+-------+
+|        800 | ram   |
+|        800 | sham  |
+|       4000 | manoj |
++------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select max(total),name from customer c inner join orders o on o.cust_id = c.id group by name order by o.total desc;
+ERROR 1055 (42000): Expression #1 of ORDER BY clause is not in GROUP BY clause and contains nonaggregated column 'java6aprilmysql.o.total' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
 mysql>
+mysql>
+mysql>
+mysql> select max(total),name from customer c inner join orders o on o.cust_id = c.id group by name order by max(total) desc;
++------------+-------+
+| max(total) | name  |
++------------+-------+
+|       4000 | manoj |
+|        800 | ram   |
+|        800 | sham  |
++------------+-------+
+3 rows in set (0.01 sec)
+
+mysql> select max(total),name from customer c inner join orders o on o.cust_id = c.id group by name order by max(total) desc limit 1;
++------------+-------+
+| max(total) | name  |
++------------+-------+
+|       4000 | manoj |
++------------+-------+
+1 row in set (0.00 sec)
+
+mysql> select max(select sum(total) from orders where name ='ram'),name from customer c inner join orders o on o.cust_id = c.id
+ group by name order by max(total) desc limit 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select sum(total) from orders where name ='ram'),name from customer c inner join' at line 1
+mysql>
+mysql>
+mysql>
+mysql> select max(select sum(total) from orders^C^Zme from customer c inner join orders o on o.cust_id = c.id group by name ord[1]+  Stopped                 mysql -u root4 -p
+vaibhav@vaibhav-HP-250-G8-Notebook-PC:~$ mysql -u root4 -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 13
+Server version: 8.0.19-0ubuntu5 (Ubuntu)
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> select max(select sum(total) from orders where name ='ram'),name from customer c inner join orders o on o.cust_id = c.id
+    ->  group by name order by max(total) desc limit 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select sum(total) from orders where name ='ram'),name from customer c inner join' at line 1
+mysql>
+mysql>
+mysql> select max(select sum(total) from orders),name from customer c inner join orders o on o.cust_id = c.id  group by name order by max(total) desc limit 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select sum(total) from orders),name from customer c inner join orders o on o.cus' at line 1
+mysql>
+mysql>
+mysql>
+mysql>
+mysql> select max(select sum(total) from order o inner join customer c c.id = o.cust_id where c.name ='ram'),name from customer
+ c inne
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select sum(total) from order o inner join customer c c.id = o.cust_id where c.na' at line 1
+mysql> select max(select sum(total) from order o inner join customer c c.id = o.cust_id),name from customer c inner join orders o on o.cust_id = c.id  group by name order by max(total) desc limit 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select sum(total) from order o inner join customer c c.id = o.cust_id),name from' at line 1
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql> select max(select sum(total) from order o inner join customer c c.id = o.cust_id),name from customer c inner join orders o on o.cust_id = c.id  group by name order by max(total) desc limit 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select sum(total) from order o inner join customer c c.id = o.cust_id),name from' at line 1
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql> select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name;
+ERROR 1046 (3D000): No database selected
+mysql> use java6aprilmysql;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name;
++------------+
+| sum(total) |
++------------+
+|       1000 |
+|        800 |
+|       4000 |
++------------+
+3 rows in set (0.00 sec)
+
+mysql> select max(select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select sum(total) from orders o inner join customer c on c.id = o.cust_id group ' at line 1
+mysql>
+mysql> select max(select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name) from t;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select sum(total) from orders o inner join customer c on c.id = o.cust_id group ' at line 1
+mysql>
+mysql>
+mysql>
+mysql> select max(select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name),name  from orders o
+inner join customer c on c.id=o.cust_id group by name;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select sum(total) from orders o inner join customer c on c.id = o.cust_id group ' at line 1
+mysql> select max(select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name),name  from orders o
+inner join customer c on c.id=o.cust_id group by name;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select sum(total) from orders o inner join customer c on c.id = o.cust_id group ' at line 1
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql> select max(select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name)
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select sum(total) from orders o inner join customer c on c.id = o.cust_id group ' at line 1
+mysql> select max(select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select sum(total) from orders o inner join customer c on c.id = o.cust_id group ' at line 1
+mysql> select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name;
++------------+
+| sum(total) |
++------------+
+|       1000 |
+|        800 |
+|       4000 |
++------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from orders;
++----+----------+------+-------+------+---------+
+| id | qauntity | rate | total | p_id | cust_id |
++----+----------+------+-------+------+---------+
+|  1 |        1 |  200 |   200 |    1 |       1 |
+|  2 |        2 |  400 |   800 |    2 |       1 |
+|  3 |        2 |  400 |   800 |    2 |       2 |
+|  4 |        1 | 4000 |  4000 |    3 |       3 |
++----+----------+------+-------+------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select max(sum(total)) from orders o inner join customer c on c.id = o.cust_id group by name;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select max(sum(total)) from orders o inner join customer c on c.id = o.cust_id group by name;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name;
++------------+
+| sum(total) |
++------------+
+|       1000 |
+|        800 |
+|       4000 |
++------------+
+3 rows in set (0.00 sec)
+
+mysql> select max(t) from (select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name,t) a group by name;
+ERROR 1054 (42S22): Unknown column 't' in 'group statement'
+mysql>
+mysql>
+mysql> select max(t) from (select sum(total)as t from orders o inner join customer c on c.id = o.cust_id group by name,t) a gro
+up by name;
+ERROR 1056 (42000): Can't group on 't'
+mysql> select max(t),name from (select sum(total)as t from orders o inner join customer c on c.id = o.cust_id group by name,t)
+a group by name;
+ERROR 1056 (42000): Can't group on 't'
+mysql>
+mysql>
+mysql>
+mysql> select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name order by sum(total) desc limit 1;
++------------+
+| sum(total) |
++------------+
+|       4000 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name where c.name = 'ram';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where c.name = 'ram'' at line 1
+mysql> select sum(total) from orders o inner join customer c on c.id = o.cust_id where c.name = 'ram';
++------------+
+| sum(total) |
++------------+
+|       1000 |
++------------+
+1 row in set (0.01 sec)
+
+mysql> select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name having sum(total) > 3000 order b
+y sum(total) desc limit 1;
++------------+
+| sum(total) |
++------------+
+|       4000 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name having sum(total) < 3000 order by sum(total) desc limit 1;
++------------+
+| sum(total) |
++------------+
+|       1000 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(total) from orders o inner join customer c on c.id = o.cust_id group by name having sum(total) < 3000 order by sum(total);
++------------+
+| sum(total) |
++------------+
+|        800 |
+|       1000 |
++------------+
+2 rows in set (0.00 sec)
+
+mysql>
+
 
