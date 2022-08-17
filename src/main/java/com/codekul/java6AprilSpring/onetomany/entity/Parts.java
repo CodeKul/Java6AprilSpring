@@ -23,7 +23,11 @@ public class Parts {
     }
 
     public void setId(Long id) {
-        this.id = id;
+        if (id > 0) {
+            this.id = id;
+        }else {
+
+        }
     }
 
     public String getPartName() {
