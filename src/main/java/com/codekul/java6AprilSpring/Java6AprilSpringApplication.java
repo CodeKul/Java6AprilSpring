@@ -1,5 +1,8 @@
 package com.codekul.java6AprilSpring;
 
+import com.codekul.java6AprilSpring.aop.BoysStudent;
+import com.codekul.java6AprilSpring.aop.GirlStudent;
+import com.codekul.java6AprilSpring.aop.Human;
 import com.codekul.java6AprilSpring.di.Student;
 import com.codekul.java6AprilSpring.ioc.SimConfig;
 import com.codekul.java6AprilSpring.ioc.Vodafone;
@@ -16,11 +19,16 @@ public class Java6AprilSpringApplication {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(Java6AprilSpringApplication.class, args);
 
-		Vodafone vodafone = context.getBean(Vodafone.class);
+//		Vodafone vodafone = context.getBean(Vodafone.class);
+//
+//		vodafone.data();
+//		vodafone.calling();
 
-		vodafone.data();
-		vodafone.calling();
+		BoysStudent boysStudent = context.getBean(BoysStudent.class);
+		boysStudent.studyBoy();
 
+		GirlStudent girlStudent = context.getBean(GirlStudent.class);
+		girlStudent.studyGirl();
 
 //		Student student = context.getBean(Student.class);
 //		student.callSubject();
