@@ -25,7 +25,7 @@ public class Java6AprilSpringApplication {
 //		vodafone.calling();
 
 		BoysStudent boysStudent = context.getBean(BoysStudent.class);
-		boysStudent.studyBoy();
+		boysStudent.studyBoy(2);
 
 		GirlStudent girlStudent = context.getBean(GirlStudent.class);
 		girlStudent.studyGirl();
