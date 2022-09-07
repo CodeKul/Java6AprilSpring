@@ -33,6 +33,7 @@ dependencies {
 	implementation 'com.haulmont.yarg:yarg:2.0.12'
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 }
 
 tasks.named('test') {
